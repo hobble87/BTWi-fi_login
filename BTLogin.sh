@@ -5,6 +5,19 @@
 Uname=""
 Password=""
 
+SCAN_FOR_BT () {
+	echo "Scanning for BTWi-fi Network"
+	SCAN=$(sudo iw dev wlp3s0 scan | grep -i BTWi-fi)
+	if [ "$SCAN" = "SSID: BTWi-fi" ]; then
+		echo "Network Found"
+		TEST_CONNECTION
+	else
+		echo "No BT Network Found"
+		echo "No Point To Continue"
+		exit 0
+	fi
+}
+
 TEST_CONNECTION () {
 	echo "Testing Connection..."
 	ping 8.8.8.8 -c 1 2>&1 >/dev/null
@@ -29,5 +42,4 @@ CONNECT_TO_INTERNET () {
    		fi
 }
 
-
-TEST_CONNECTION
+SCAN_FOR_BT
